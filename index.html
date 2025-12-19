@@ -857,11 +857,21 @@
             statusText.textContent = 'Live on air';
             statusDot.classList.add('active');
             powerLed.classList.add('active');
+            playButton.classList.add('playing');
+            startButton.classList.add('active');
+            vinyl.classList.add('spinning');
+            tonearm.classList.add('playing');
         });
 
         audio.addEventListener('pause', () => {
             if (!audio.ended) {
                 statusText.textContent = 'Paused';
+                playButton.classList.remove('playing');
+                startButton.classList.remove('active');
+                vinyl.classList.remove('spinning');
+                tonearm.classList.remove('playing');
+                statusDot.classList.remove('active');
+                powerLed.classList.remove('active');
             }
         });
 
