@@ -272,31 +272,49 @@
         /* Vinyl peeking out effect */
         .vinyl-peek {
             position: absolute;
-            right: -20px;
+            right: -110px;
             top: 50%;
             transform: translateY(-50%);
-            width: 30px;
-            height: 85%;
+            width: 140px;
+            height: 140px;
+            aspect-ratio: 1;
             background:
-                radial-gradient(circle at 35% 50%, #2a2a2a 0%, #0a0a0a 50%);
-            border-radius: 0 15px 15px 0;
+                radial-gradient(circle at 50% 50%, #2a2a2a 0%, #0a0a0a 70%);
+            border-radius: 50%;
             box-shadow:
-                inset -2px 0 4px rgba(0, 0, 0, 0.5),
-                2px 0 8px rgba(0, 0, 0, 0.3);
+                inset -3px -3px 8px rgba(0, 0, 0, 0.6),
+                inset 3px 3px 8px rgba(255, 255, 255, 0.1),
+                2px 0 12px rgba(0, 0, 0, 0.4);
             z-index: -1;
         }
 
         .vinyl-peek::before {
             content: '';
             position: absolute;
-            inset: 10% 0 10% 0;
+            inset: 0;
+            border-radius: 50%;
             background: repeating-linear-gradient(
                 0deg,
                 transparent,
                 transparent 2px,
-                rgba(255, 255, 255, 0.03) 2px,
-                rgba(255, 255, 255, 0.03) 3px
+                rgba(255, 255, 255, 0.02) 2px,
+                rgba(255, 255, 255, 0.02) 3px
             );
+        }
+
+        .vinyl-peek::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 2px rgba(255, 205, 0, 0.3),
+                inset 0 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         /* Spine */
