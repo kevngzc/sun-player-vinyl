@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUN Junior Radio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;800;900&family=Fredoka:wght@600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(255, 205, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 102, 153, 0.2) 0%, transparent 50%),
+                linear-gradient(180deg, #001a2e 0%, #004266 50%, #002a44 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            opacity: 0.8;
+            z-index: 1;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #ffcd00, transparent);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #006699, transparent);
+            bottom: -5%;
+            right: -5%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            width: 100%;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .branding {
+            text-align: left;
+        }
+
+        .logo-wrapper {
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffcd00 0%, #ffe566 50%, #ffcd00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 8px 32px rgba(255, 205, 0, 0.4));
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 200;
+            color: rgba(255, 205, 0, 0.7);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 205, 0, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ffcd00;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .info-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .controls-section {
+            margin-top: 3rem;
+        }
+
+        .play-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffcd00 0%, #ffd700 100%);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 0 0 8px rgba(255, 205, 0, 0.1),
+                0 8px 32px rgba(255, 205, 0, 0.4),
+                0 16px 64px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow:
+                0 0 0 12px rgba(255, 205, 0, 0.15),
+                0 12px 48px rgba(255, 205, 0, 0.6),
+                0 24px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .play-icon, .pause-icon {
+            width: 48px;
+            height: 48px;
+            fill: #004266;
+        }
+
+        .pause-icon {
+            display: none;
+        }
+
+        .play-button.playing .play-icon {
+            display: none;
+        }
+
+        .play-button.playing .pause-icon {
+            display: block;
+        }
+
+        .volume-control {
+            margin-top: 1.5rem;
+        }
+
+        .volume-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ffcd00;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            max-width: 300px;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 205, 0, 0.1);
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffcd00, #ffd700);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 205, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffcd00, #ffd700);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px rgba(255, 205, 0, 0.5);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ffcd00;
+            box-shadow: 0 0 16px #ffcd00;
+            opacity: 0.5;
+        }
+
+        .status-dot.active {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 16px #ffcd00;
+            }
+            50% {
+                transform: scale(1.3);
+                box-shadow: 0 0 32px #ffcd00;
+            }
+        }
+
+        /* TURNTABLE */
+        .player-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .turntable {
+            position: relative;
+            width: clamp(400px, 45vw, 650px);
+            height: clamp(320px, 36vw, 520px);
+            perspective: 1500px;
+        }
+
+        /* Plinth - the turntable base */
+        .plinth {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+            border-radius: 8px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+            border: 1px solid #000;
+        }
+
+        /* Wood grain texture overlay */
+        .plinth::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            background:
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.03) 2px,
+                    rgba(0, 0, 0, 0.03) 4px);
+            opacity: 0.5;
+        }
+
+        /* Corner feet */
+        .foot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #333, #111);
+            border-radius: 50%;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.6),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            z-index: -1;
+        }
+
+        .foot-tl { top: -8px; left: 20px; }
+        .foot-tr { top: -8px; right: 20px; }
+        .foot-bl { bottom: -8px; left: 20px; }
+        .foot-br { bottom: -8px; right: 20px; }
+
+        /* Platter - metallic disc under vinyl */
+        .platter-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateX(-12%);
+            width: 55%;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .platter {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 35% 35%, #888, #444 40%, #222 70%, #111);
+            box-shadow:
+                0 0 0 2px #0a0a0a,
+                0 0 0 3px #333,
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                inset 0 0 30px rgba(0, 0, 0, 0.5),
+                inset 0 2px 6px rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        /* Strobe dots on platter edge */
+        .strobe-dots {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+        }
+
+        .strobe-dot {
+            position: absolute;
+            width: 4px;
+            height: 8px;
+            background: rgba(255, 205, 0, 0.3);
+            top: 50%;
+            left: 50%;
+            transform-origin: 0 0;
+        }
+
+        /* Vinyl record on platter */
+        .vinyl-wrapper {
+            position: absolute;
+            inset: 6%;
+            border-radius: 50%;
+            aspect-ratio: 1;
+        }
+
+        .vinyl {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 35% 35%, #2a2a2a 0%, #0a0a0a 25%),
+                radial-gradient(circle, transparent 28%, #1a1a1a 28%, #0d0d0d 29%, transparent 29.5%),
+                radial-gradient(circle, transparent 46%, #1a1a1a 46%, #0d0d0d 47.5%, transparent 48%),
+                radial-gradient(circle at center, #0a0a0a, #000);
+            position: relative;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 4px 16px rgba(0, 0, 0, 0.6),
+                inset 0 0 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .vinyl.spinning {
+            animation: spin 2.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Vinyl grooves */
+        .grooves {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background-image:
+                repeating-radial-gradient(circle,
+                    transparent 0px,
+                    transparent 1.2px,
+                    rgba(255, 255, 255, 0.02) 1.2px,
+                    rgba(255, 255, 255, 0.02) 1.8px);
+        }
+
+        /* Center label */
+        .label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 36%;
+            height: 36%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffe566 0%, #ffcd00 40%, #cc9900 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: clamp(1rem, 2.5vw, 2rem);
+            color: #004266;
+            letter-spacing: -0.03em;
+            box-shadow:
+                0 0 30px rgba(255, 205, 0, 0.5),
+                inset 0 2px 8px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Center spindle */
+        .spindle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8%;
+            height: 8%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #555, #0a0a0a);
+            box-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.8),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            z-index: 10;
+        }
+
+        /* Tonearm assembly */
+        .tonearm-assembly {
+            position: absolute;
+            top: 35%;
+            right: 15%;
+            width: 35%;
+            height: 30%;
+        }
+
+        /* Tonearm base/pivot */
+        .tonearm-base {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 35% 35%, #444, #1a1a1a);
+            border-radius: 50%;
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.6),
+                inset 0 1px 3px rgba(255, 255, 255, 0.2);
+            z-index: 20;
+        }
+
+        /* Tonearm */
+        .tonearm {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            width: 85%;
+            height: 5px;
+            background: linear-gradient(90deg,
+                #888 0%,
+                #ccc 30%,
+                #fff 50%,
+                #ccc 70%,
+                #888 100%);
+            transform: translateY(-50%);
+            transform-origin: 100% 50%;
+            border-radius: 2px;
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 15;
+        }
+
+        .tonearm.playing {
+            transform: translateY(-50%) rotate(-32deg);
+        }
+
+        /* Headshell - the front part */
+        .headshell {
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 14px;
+            background: linear-gradient(135deg, #666, #333);
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .headshell::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: #ffcd00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 205, 0, 0.6);
+        }
+
+        /* Counterweight */
+        .counterweight {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 35% 35%, #555, #222);
+            border-radius: 50%;
+            box-shadow:
+                0 3px 8px rgba(0, 0, 0, 0.6),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Control panel */
+        .control-panel {
+            position: absolute;
+            bottom: 15%;
+            right: 12%;
+            display: flex;
+            gap: 12px;
+        }
+
+        .control-button {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 35% 35%, #333, #0a0a0a);
+            border: 2px solid #1a1a1a;
+            border-radius: 50%;
+            box-shadow:
+                0 3px 8px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.625rem;
+            font-weight: 800;
+            color: rgba(255, 205, 0, 0.6);
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: radial-gradient(circle at 35% 35%, #444, #1a1a1a);
+            color: #ffcd00;
+            box-shadow:
+                0 3px 8px rgba(0, 0, 0, 0.4),
+                0 0 12px rgba(255, 205, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .control-button.active {
+            color: #ffcd00;
+            box-shadow:
+                0 0 16px rgba(255, 205, 0, 0.4),
+                inset 0 0 8px rgba(255, 205, 0, 0.2);
+        }
+
+        /* Power indicator LED */
+        .power-led {
+            position: absolute;
+            top: 8%;
+            right: 5%;
+            width: 10px;
+            height: 10px;
+            background: #ffcd00;
+            border-radius: 50%;
+            box-shadow:
+                0 0 12px #ffcd00,
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            opacity: 0.5;
+        }
+
+        .power-led.active {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .branding {
+                text-align: center;
+            }
+
+            .info-card, .play-button, .volume-slider, .status {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .status {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .turntable {
+                width: 95vw;
+                height: calc(95vw * 0.8);
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .branding {
+            animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+        }
+
+        .player-container {
+            animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="container">
+        <div class="branding">
+            <div class="logo-wrapper">
+                <h1 class="logo">SUN<br>Junior</h1>
+                <p class="tagline">Radio pour enfants</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">Now Playing</div>
+                <div class="info-value">Live Stream</div>
+            </div>
+
+            <div class="controls-section">
+                <button class="play-button" id="playButton" aria-label="Play/Pause">
+                    <svg class="play-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                    </svg>
+                </button>
+
+                <div class="volume-control">
+                    <label class="volume-label" for="volumeSlider">Volume</label>
+                    <input
+                        type="range"
+                        id="volumeSlider"
+                        class="volume-slider"
+                        min="0"
+                        max="100"
+                        value="70"
+                        aria-label="Volume"
+                    >
+                </div>
+
+                <div class="status">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Ready to play</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="player-container">
+            <div class="turntable">
+                <!-- Plinth (turntable base) -->
+                <div class="plinth">
+                    <div class="foot foot-tl"></div>
+                    <div class="foot foot-tr"></div>
+                    <div class="foot foot-bl"></div>
+                    <div class="foot foot-br"></div>
+                </div>
+
+                <!-- Power LED -->
+                <div class="power-led" id="powerLed"></div>
+
+                <!-- Platter and vinyl -->
+                <div class="platter-container">
+                    <div class="platter">
+                        <div class="strobe-dots" id="strobeDots"></div>
+
+                        <div class="vinyl-wrapper">
+                            <div class="vinyl" id="vinyl">
+                                <div class="grooves"></div>
+                                <div class="label">SUN</div>
+                                <div class="spindle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tonearm assembly -->
+                <div class="tonearm-assembly">
+                    <div class="tonearm" id="tonearm">
+                        <div class="headshell"></div>
+                        <div class="counterweight"></div>
+                    </div>
+                    <div class="tonearm-base"></div>
+                </div>
+
+                <!-- Control panel -->
+                <div class="control-panel">
+                    <div class="control-button" id="speedButton">33</div>
+                    <div class="control-button active" id="startButton">START</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio" preload="metadata">
+        <source src="https://diffusion.lafrap.fr/sun-junior.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const playButton = document.getElementById('playButton');
+        const startButton = document.getElementById('startButton');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const vinyl = document.getElementById('vinyl');
+        const tonearm = document.getElementById('tonearm');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const powerLed = document.getElementById('powerLed');
+
+        // Create strobe dots
+        const strobeDots = document.getElementById('strobeDots');
+        for (let i = 0; i < 24; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'strobe-dot';
+            dot.style.transform = `rotate(${i * 15}deg) translateX(95%)`;
+            strobeDots.appendChild(dot);
+        }
+
+        audio.volume = volumeSlider.value / 100;
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    playButton.classList.add('playing');
+                    startButton.classList.add('active');
+                    vinyl.classList.add('spinning');
+                    tonearm.classList.add('playing');
+                    statusDot.classList.add('active');
+                    powerLed.classList.add('active');
+                    statusText.textContent = 'Live on air';
+                }).catch(error => {
+                    console.error('Playback failed:', error);
+                    statusText.textContent = 'Connection error';
+                });
+            } else {
+                audio.pause();
+                playButton.classList.remove('playing');
+                startButton.classList.remove('active');
+                vinyl.classList.remove('spinning');
+                tonearm.classList.remove('playing');
+                statusDot.classList.remove('active');
+                powerLed.classList.remove('active');
+                statusText.textContent = 'Paused';
+            }
+        }
+
+        playButton.addEventListener('click', togglePlay);
+        startButton.addEventListener('click', togglePlay);
+
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value / 100;
+            updateVolumeSlider(e.target.value);
+        });
+
+        function updateVolumeSlider(value) {
+            const percent = value / 100;
+            volumeSlider.style.background = `linear-gradient(90deg,
+                rgba(255, 205, 0, 0.4) 0%,
+                rgba(255, 205, 0, 0.4) ${percent * 100}%,
+                rgba(255, 205, 0, 0.1) ${percent * 100}%,
+                rgba(255, 205, 0, 0.1) 100%)`;
+        }
+
+        audio.addEventListener('waiting', () => {
+            statusText.textContent = 'Buffering...';
+        });
+
+        audio.addEventListener('playing', () => {
+            statusText.textContent = 'Live on air';
+            statusDot.classList.add('active');
+            powerLed.classList.add('active');
+        });
+
+        audio.addEventListener('pause', () => {
+            if (!audio.ended) {
+                statusText.textContent = 'Paused';
+            }
+        });
+
+        audio.addEventListener('error', (e) => {
+            console.error('Audio error:', e);
+            statusText.textContent = 'Connection error';
+            playButton.classList.remove('playing');
+            startButton.classList.remove('active');
+            vinyl.classList.remove('spinning');
+            tonearm.classList.remove('playing');
+            statusDot.classList.remove('active');
+            powerLed.classList.remove('active');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                togglePlay();
+            }
+        });
+
+        updateVolumeSlider(volumeSlider.value);
+    </script>
+</body>
+</html>
