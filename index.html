@@ -272,7 +272,7 @@
         /* Vinyl peeking out effect */
         .vinyl-peek {
             position: absolute;
-            right: -110px;
+            right: -125px;
             top: 50%;
             transform: translateY(-50%);
             width: 140px;
@@ -286,6 +286,23 @@
                 inset 3px 3px 8px rgba(255, 255, 255, 0.1),
                 2px 0 12px rgba(0, 0, 0, 0.4);
             z-index: -1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .vinyl-item:hover .vinyl-peek {
+            transform: translateY(-50%) translateX(35px);
+            box-shadow:
+                inset -3px -3px 8px rgba(0, 0, 0, 0.6),
+                inset 3px 3px 8px rgba(255, 255, 255, 0.1),
+                4px 0 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .vinyl-item.active .vinyl-peek {
+            transform: translateY(-50%) translateX(45px);
+            box-shadow:
+                inset -3px -3px 8px rgba(0, 0, 0, 0.6),
+                inset 3px 3px 8px rgba(255, 255, 255, 0.1),
+                6px 0 20px rgba(255, 205, 0, 0.3);
         }
 
         .vinyl-peek::before {
