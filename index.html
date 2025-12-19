@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUN Junior Radio</title>
+    <title>SUN Radio - Vinyl Player</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;800;900&family=Fredoka:wght@600&display=swap" rel="stylesheet">
@@ -24,8 +24,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+            padding: 2rem;
         }
 
         body::before {
@@ -76,56 +77,313 @@
         .container {
             position: relative;
             z-index: 10;
-            max-width: 1400px;
+            max-width: 1600px;
             width: 100%;
-            padding: 2rem;
             display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 4rem;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* Vinyl Collection */
+        .vinyl-collection {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 205, 0, 0.1);
+        }
+
+        .collection-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 205, 0, 0.2);
+        }
+
+        .collection-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffcd00, #ffe566);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .collection-subtitle {
+            font-size: 0.625rem;
+            font-weight: 200;
+            color: rgba(255, 205, 0, 0.6);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .vinyl-item {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            height: 280px;
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+
+        .vinyl-item:hover .vinyl-sleeve {
+            transform: translateX(-12px) rotateY(8deg);
+            box-shadow: -8px 12px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        .vinyl-item.active .vinyl-sleeve {
+            transform: translateX(-16px) rotateY(12deg);
+            box-shadow: -12px 16px 48px rgba(255, 205, 0, 0.4);
+        }
+
+        /* Vinyl sleeve - 3D effect like standing on shelf */
+        .vinyl-sleeve {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform: translateX(0) rotateY(0deg);
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -4px 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Front cover */
+        .vinyl-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .vinyl-cover-art {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 2rem;
         }
 
-        .branding {
-            text-align: left;
+        /* Junior - Minimalist sun rays */
+        .cover-junior {
+            background:
+                linear-gradient(135deg, #ffcd00 0%, #ffa500 100%);
         }
 
-        .logo-wrapper {
-            margin-bottom: 3rem;
+        .cover-junior::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-conic-gradient(from 0deg at 50% 50%,
+                    transparent 0deg,
+                    transparent 10deg,
+                    rgba(255, 255, 255, 0.1) 10deg,
+                    rgba(255, 255, 255, 0.1) 12deg);
+        }
+
+        /* Electro - Circuit board pattern */
+        .cover-electro {
+            background:
+                linear-gradient(135deg, #0066ff 0%, #6600ff 100%);
+        }
+
+        .cover-electro::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(90deg, transparent 48%, rgba(0, 255, 255, 0.3) 49%, rgba(0, 255, 255, 0.3) 51%, transparent 52%),
+                linear-gradient(0deg, transparent 48%, rgba(0, 255, 255, 0.3) 49%, rgba(0, 255, 255, 0.3) 51%, transparent 52%);
+            background-size: 60px 60px;
+        }
+
+        /* Rock - Bold stripes */
+        .cover-rock {
+            background:
+                linear-gradient(135deg, #ff0040 0%, #660000 100%);
+        }
+
+        .cover-rock::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(0, 0, 0, 0.3) 20px,
+                    rgba(0, 0, 0, 0.3) 40px);
+        }
+
+        /* Nouvo - Organic waves */
+        .cover-nouvo {
+            background:
+                linear-gradient(135deg, #00ff88 0%, #009944 100%);
+        }
+
+        .cover-nouvo::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, transparent 40%, rgba(255, 255, 255, 0.1) 41%, rgba(255, 255, 255, 0.1) 42%, transparent 43%),
+                radial-gradient(circle at 60% 70%, transparent 30%, rgba(255, 255, 255, 0.1) 31%, rgba(255, 255, 255, 0.1) 32%, transparent 33%),
+                radial-gradient(circle at 80% 30%, transparent 35%, rgba(255, 255, 255, 0.1) 36%, rgba(255, 255, 255, 0.1) 37%, transparent 38%);
+        }
+
+        .cover-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: rgba(255, 255, 255, 0.95);
+            text-transform: uppercase;
+            z-index: 2;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .cover-junior .cover-title {
+            color: #004266;
+            text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+        }
+
+        .cover-subtitle {
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 2;
+        }
+
+        .cover-junior .cover-subtitle {
+            color: rgba(0, 66, 102, 0.7);
+        }
+
+        /* Vinyl peeking out effect */
+        .vinyl-peek {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 85%;
+            background:
+                radial-gradient(circle at 35% 50%, #2a2a2a 0%, #0a0a0a 50%);
+            border-radius: 0 15px 15px 0;
+            box-shadow:
+                inset -2px 0 4px rgba(0, 0, 0, 0.5),
+                2px 0 8px rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        .vinyl-peek::before {
+            content: '';
+            position: absolute;
+            inset: 10% 0 10% 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.03) 2px,
+                rgba(255, 255, 255, 0.03) 3px
+            );
+        }
+
+        /* Spine */
+        .vinyl-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 12px;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+            transform: translateZ(-6px) rotateY(90deg);
+            transform-origin: left;
+        }
+
+        .vinyl-info {
+            position: absolute;
+            bottom: -32px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .vinyl-item:hover .vinyl-info {
+            opacity: 1;
+        }
+
+        .vinyl-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.125rem;
+        }
+
+        .vinyl-genre {
+            font-size: 0.625rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Player Section */
+        .player-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .player-header {
+            text-align: center;
         }
 
         .logo {
             font-family: 'Outfit', sans-serif;
-            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-size: clamp(3rem, 8vw, 5rem);
             font-weight: 900;
             letter-spacing: -0.05em;
             line-height: 0.9;
-            margin-bottom: 0.5rem;
             background: linear-gradient(135deg, #ffcd00 0%, #ffe566 50%, #ffcd00 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             filter: drop-shadow(0 8px 32px rgba(255, 205, 0, 0.4));
+            margin-bottom: 0.5rem;
         }
 
         .tagline {
-            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-size: clamp(0.875rem, 2vw, 1.25rem);
             font-weight: 200;
             color: rgba(255, 205, 0, 0.7);
             letter-spacing: 0.3em;
             text-transform: uppercase;
-            margin-bottom: 4rem;
         }
 
-        .info-card {
+        .now-playing {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 205, 0, 0.1);
             border-radius: 24px;
-            padding: 2rem;
-            margin-bottom: 2rem;
         }
 
-        .info-label {
+        .now-playing-label {
             font-size: 0.75rem;
             font-weight: 800;
             color: #ffcd00;
@@ -135,20 +393,366 @@
             opacity: 0.8;
         }
 
-        .info-value {
-            font-size: 1.25rem;
+        .now-playing-title {
+            font-size: 1.5rem;
             font-weight: 600;
             color: #fff;
             font-family: 'Fredoka', sans-serif;
         }
 
-        .controls-section {
-            margin-top: 3rem;
+        /* Turntable */
+        .turntable-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+        }
+
+        .turntable {
+            position: relative;
+            width: clamp(400px, 45vw, 650px);
+            height: clamp(320px, 36vw, 520px);
+            perspective: 1500px;
+        }
+
+        .plinth {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+            border-radius: 8px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+            border: 1px solid #000;
+        }
+
+        .plinth::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            background: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+            opacity: 0.5;
+        }
+
+        .foot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #333, #111);
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            z-index: -1;
+        }
+
+        .foot-tl { top: -8px; left: 20px; }
+        .foot-tr { top: -8px; right: 20px; }
+        .foot-bl { bottom: -8px; left: 20px; }
+        .foot-br { bottom: -8px; right: 20px; }
+
+        .platter-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateX(-12%);
+            width: 55%;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .platter {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #888, #444 40%, #222 70%, #111);
+            box-shadow:
+                0 0 0 2px #0a0a0a,
+                0 0 0 3px #333,
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                inset 0 0 30px rgba(0, 0, 0, 0.5),
+                inset 0 2px 6px rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .strobe-dots {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+        }
+
+        .strobe-dot {
+            position: absolute;
+            width: 4px;
+            height: 8px;
+            background: rgba(255, 205, 0, 0.3);
+            top: 50%;
+            left: 50%;
+            transform-origin: 0 0;
+        }
+
+        .vinyl-wrapper {
+            position: absolute;
+            inset: 6%;
+            border-radius: 50%;
+            aspect-ratio: 1;
+        }
+
+        .vinyl {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 35% 35%, #2a2a2a 0%, #0a0a0a 25%),
+                radial-gradient(circle, transparent 28%, #1a1a1a 28%, #0d0d0d 29%, transparent 29.5%),
+                radial-gradient(circle, transparent 46%, #1a1a1a 46%, #0d0d0d 47.5%, transparent 48%),
+                radial-gradient(circle at center, #0a0a0a, #000);
+            position: relative;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 4px 16px rgba(0, 0, 0, 0.6),
+                inset 0 0 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .vinyl.spinning {
+            animation: spin 2.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .grooves {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background-image: repeating-radial-gradient(circle, transparent 0px, transparent 1.2px, rgba(255, 255, 255, 0.02) 1.2px, rgba(255, 255, 255, 0.02) 1.8px);
+        }
+
+        .label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 36%;
+            height: 36%;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: clamp(0.875rem, 2vw, 1.5rem);
+            letter-spacing: -0.03em;
+            box-shadow:
+                0 0 30px rgba(255, 205, 0, 0.5),
+                inset 0 2px 8px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        /* Label styles for different stations */
+        .label-junior {
+            background: radial-gradient(circle at 30% 30%, #ffe566 0%, #ffcd00 40%, #cc9900 100%);
+            color: #004266;
+        }
+
+        .label-electro {
+            background: radial-gradient(circle at 30% 30%, #66d9ff 0%, #0099ff 40%, #0066cc 100%);
+            color: #001a33;
+        }
+
+        .label-rock {
+            background: radial-gradient(circle at 30% 30%, #ff6680 0%, #ff0040 40%, #cc0033 100%);
+            color: #fff;
+        }
+
+        .label-nouvo {
+            background: radial-gradient(circle at 30% 30%, #66ffaa 0%, #00ff88 40%, #00cc66 100%);
+            color: #003320;
+        }
+
+        .label-text {
+            font-size: 0.6em;
+            font-weight: 600;
+            margin-top: 0.25rem;
+            opacity: 0.8;
+        }
+
+        .spindle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8%;
+            height: 8%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #555, #0a0a0a);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            z-index: 10;
+        }
+
+        .tonearm-assembly {
+            position: absolute;
+            top: 35%;
+            right: 15%;
+            width: 35%;
+            height: 30%;
+        }
+
+        .tonearm-base {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 35% 35%, #444, #1a1a1a);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 3px rgba(255, 255, 255, 0.2);
+            z-index: 20;
+        }
+
+        .tonearm {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            width: 85%;
+            height: 5px;
+            background: linear-gradient(90deg, #888 0%, #ccc 30%, #fff 50%, #ccc 70%, #888 100%);
+            transform: translateY(-50%);
+            transform-origin: 100% 50%;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 15;
+        }
+
+        .tonearm.playing {
+            transform: translateY(-50%) rotate(-32deg);
+        }
+
+        .headshell {
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 14px;
+            background: linear-gradient(135deg, #666, #333);
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .headshell::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: #ffcd00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 205, 0, 0.6);
+        }
+
+        .counterweight {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 35% 35%, #555, #222);
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .control-panel {
+            position: absolute;
+            bottom: 15%;
+            right: 12%;
+            display: flex;
+            gap: 12px;
+        }
+
+        .control-button {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 35% 35%, #333, #0a0a0a);
+            border: 2px solid #1a1a1a;
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.625rem;
+            font-weight: 800;
+            color: rgba(255, 205, 0, 0.6);
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: radial-gradient(circle at 35% 35%, #444, #1a1a1a);
+            color: #ffcd00;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), 0 0 12px rgba(255, 205, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .control-button.active {
+            color: #ffcd00;
+            box-shadow: 0 0 16px rgba(255, 205, 0, 0.4), inset 0 0 8px rgba(255, 205, 0, 0.2);
+        }
+
+        .power-led {
+            position: absolute;
+            top: 8%;
+            right: 5%;
+            width: 10px;
+            height: 10px;
+            background: #ffcd00;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #ffcd00, inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            opacity: 0.5;
+        }
+
+        .power-led.active {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 16px #ffcd00;
+            }
+            50% {
+                transform: scale(1.3);
+                box-shadow: 0 0 32px #ffcd00;
+            }
+        }
+
+        /* Controls */
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
         .play-button {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: linear-gradient(135deg, #ffcd00 0%, #ffd700 100%);
             border: none;
@@ -162,7 +766,6 @@
                 0 16px 64px rgba(0, 0, 0, 0.3);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            margin-bottom: 2rem;
         }
 
         .play-button:hover {
@@ -174,8 +777,8 @@
         }
 
         .play-icon, .pause-icon {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             fill: #004266;
         }
 
@@ -192,7 +795,9 @@
         }
 
         .volume-control {
-            margin-top: 1.5rem;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
         }
 
         .volume-label {
@@ -203,13 +808,13 @@
             text-transform: uppercase;
             margin-bottom: 1rem;
             display: block;
+            text-align: center;
             opacity: 0.8;
         }
 
         .volume-slider {
             -webkit-appearance: none;
             width: 100%;
-            max-width: 300px;
             height: 8px;
             border-radius: 4px;
             background: rgba(255, 205, 0, 0.1);
@@ -245,7 +850,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-top: 2rem;
+            justify-content: center;
             font-size: 0.875rem;
             color: rgba(255, 255, 255, 0.6);
         }
@@ -264,388 +869,25 @@
             animation: pulse 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 16px #ffcd00;
-            }
-            50% {
-                transform: scale(1.3);
-                box-shadow: 0 0 32px #ffcd00;
-            }
-        }
-
-        /* TURNTABLE */
-        .player-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .turntable {
-            position: relative;
-            width: clamp(400px, 45vw, 650px);
-            height: clamp(320px, 36vw, 520px);
-            perspective: 1500px;
-        }
-
-        /* Plinth - the turntable base */
-        .plinth {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
-            border-radius: 8px;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.5);
-            border: 1px solid #000;
-        }
-
-        /* Wood grain texture overlay */
-        .plinth::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 8px;
-            background:
-                repeating-linear-gradient(90deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0, 0, 0, 0.03) 2px,
-                    rgba(0, 0, 0, 0.03) 4px);
-            opacity: 0.5;
-        }
-
-        /* Corner feet */
-        .foot {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, #333, #111);
-            border-radius: 50%;
-            box-shadow:
-                0 4px 8px rgba(0, 0, 0, 0.6),
-                inset 0 1px 2px rgba(255, 255, 255, 0.2);
-            z-index: -1;
-        }
-
-        .foot-tl { top: -8px; left: 20px; }
-        .foot-tr { top: -8px; right: 20px; }
-        .foot-bl { bottom: -8px; left: 20px; }
-        .foot-br { bottom: -8px; right: 20px; }
-
-        /* Platter - metallic disc under vinyl */
-        .platter-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) translateX(-12%);
-            width: 55%;
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .platter {
-            width: 100%;
-            height: 100%;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background:
-                radial-gradient(circle at 35% 35%, #888, #444 40%, #222 70%, #111);
-            box-shadow:
-                0 0 0 2px #0a0a0a,
-                0 0 0 3px #333,
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                inset 0 0 30px rgba(0, 0, 0, 0.5),
-                inset 0 2px 6px rgba(255, 255, 255, 0.2);
-            position: relative;
-        }
-
-        /* Strobe dots on platter edge */
-        .strobe-dots {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-        }
-
-        .strobe-dot {
-            position: absolute;
-            width: 4px;
-            height: 8px;
-            background: rgba(255, 205, 0, 0.3);
-            top: 50%;
-            left: 50%;
-            transform-origin: 0 0;
-        }
-
-        /* Vinyl record on platter */
-        .vinyl-wrapper {
-            position: absolute;
-            inset: 6%;
-            border-radius: 50%;
-            aspect-ratio: 1;
-        }
-
-        .vinyl {
-            width: 100%;
-            height: 100%;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background:
-                radial-gradient(circle at 35% 35%, #2a2a2a 0%, #0a0a0a 25%),
-                radial-gradient(circle, transparent 28%, #1a1a1a 28%, #0d0d0d 29%, transparent 29.5%),
-                radial-gradient(circle, transparent 46%, #1a1a1a 46%, #0d0d0d 47.5%, transparent 48%),
-                radial-gradient(circle at center, #0a0a0a, #000);
-            position: relative;
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                0 4px 16px rgba(0, 0, 0, 0.6),
-                inset 0 0 40px rgba(0, 0, 0, 0.8);
-        }
-
-        .vinyl.spinning {
-            animation: spin 2.5s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Vinyl grooves */
-        .grooves {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background-image:
-                repeating-radial-gradient(circle,
-                    transparent 0px,
-                    transparent 1.2px,
-                    rgba(255, 255, 255, 0.02) 1.2px,
-                    rgba(255, 255, 255, 0.02) 1.8px);
-        }
-
-        /* Center label */
-        .label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 36%;
-            height: 36%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ffe566 0%, #ffcd00 40%, #cc9900 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 900;
-            font-size: clamp(1rem, 2.5vw, 2rem);
-            color: #004266;
-            letter-spacing: -0.03em;
-            box-shadow:
-                0 0 30px rgba(255, 205, 0, 0.5),
-                inset 0 2px 8px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Center spindle */
-        .spindle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 8%;
-            height: 8%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #555, #0a0a0a);
-            box-shadow:
-                0 2px 6px rgba(0, 0, 0, 0.8),
-                inset 0 1px 2px rgba(255, 255, 255, 0.3);
-            z-index: 10;
-        }
-
-        /* Tonearm assembly */
-        .tonearm-assembly {
-            position: absolute;
-            top: 35%;
-            right: 15%;
-            width: 35%;
-            height: 30%;
-        }
-
-        /* Tonearm base/pivot */
-        .tonearm-base {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle at 35% 35%, #444, #1a1a1a);
-            border-radius: 50%;
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, 0.6),
-                inset 0 1px 3px rgba(255, 255, 255, 0.2);
-            z-index: 20;
-        }
-
-        /* Tonearm */
-        .tonearm {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            width: 85%;
-            height: 5px;
-            background: linear-gradient(90deg,
-                #888 0%,
-                #ccc 30%,
-                #fff 50%,
-                #ccc 70%,
-                #888 100%);
-            transform: translateY(-50%);
-            transform-origin: 100% 50%;
-            border-radius: 2px;
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5);
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 15;
-        }
-
-        .tonearm.playing {
-            transform: translateY(-50%) rotate(-32deg);
-        }
-
-        /* Headshell - the front part */
-        .headshell {
-            position: absolute;
-            left: -12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 14px;
-            background: linear-gradient(135deg, #666, #333);
-            border-radius: 2px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-        }
-
-        .headshell::after {
-            content: '';
-            position: absolute;
-            left: -4px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            background: #ffcd00;
-            border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 205, 0, 0.6);
-        }
-
-        /* Counterweight */
-        .counterweight {
-            position: absolute;
-            right: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 28px;
-            height: 28px;
-            background: radial-gradient(circle at 35% 35%, #555, #222);
-            border-radius: 50%;
-            box-shadow:
-                0 3px 8px rgba(0, 0, 0, 0.6),
-                inset 0 1px 2px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Control panel */
-        .control-panel {
-            position: absolute;
-            bottom: 15%;
-            right: 12%;
-            display: flex;
-            gap: 12px;
-        }
-
-        .control-button {
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle at 35% 35%, #333, #0a0a0a);
-            border: 2px solid #1a1a1a;
-            border-radius: 50%;
-            box-shadow:
-                0 3px 8px rgba(0, 0, 0, 0.4),
-                inset 0 1px 2px rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.625rem;
-            font-weight: 800;
-            color: rgba(255, 205, 0, 0.6);
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .control-button:hover {
-            background: radial-gradient(circle at 35% 35%, #444, #1a1a1a);
-            color: #ffcd00;
-            box-shadow:
-                0 3px 8px rgba(0, 0, 0, 0.4),
-                0 0 12px rgba(255, 205, 0, 0.3),
-                inset 0 1px 2px rgba(255, 255, 255, 0.2);
-        }
-
-        .control-button.active {
-            color: #ffcd00;
-            box-shadow:
-                0 0 16px rgba(255, 205, 0, 0.4),
-                inset 0 0 8px rgba(255, 205, 0, 0.2);
-        }
-
-        /* Power indicator LED */
-        .power-led {
-            position: absolute;
-            top: 8%;
-            right: 5%;
-            width: 10px;
-            height: 10px;
-            background: #ffcd00;
-            border-radius: 50%;
-            box-shadow:
-                0 0 12px #ffcd00,
-                inset 0 1px 2px rgba(255, 255, 255, 0.5);
-            opacity: 0.5;
-        }
-
-        .power-led.active {
-            opacity: 1;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
             .container {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+                gap: 2rem;
             }
 
-            .branding {
-                text-align: center;
+            .vinyl-collection {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 1rem;
             }
 
-            .info-card, .play-button, .volume-slider, .status {
-                margin-left: auto;
-                margin-right: auto;
+            .vinyl-item {
+                min-width: 200px;
             }
 
-            .status {
-                justify-content: center;
+            .vinyl-item:hover {
+                transform: translateY(-8px);
             }
         }
 
@@ -653,6 +895,10 @@
             .turntable {
                 width: 95vw;
                 height: calc(95vw * 0.8);
+            }
+
+            .logo {
+                font-size: 2.5rem;
             }
         }
 
@@ -679,11 +925,11 @@
             }
         }
 
-        .branding {
+        .vinyl-collection {
             animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) backwards;
         }
 
-        .player-container {
+        .player-section {
             animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
         }
     </style>
@@ -693,18 +939,138 @@
     <div class="orb orb-2"></div>
 
     <div class="container">
-        <div class="branding">
-            <div class="logo-wrapper">
-                <h1 class="logo">SUN<br>Junior</h1>
-                <p class="tagline">Radio pour enfants</p>
+        <!-- Vinyl Collection -->
+        <div class="vinyl-collection">
+            <div class="collection-header">
+                <h2 class="collection-title">Collection</h2>
+                <p class="collection-subtitle">Select your vinyl</p>
             </div>
 
-            <div class="info-card">
-                <div class="info-label">Now Playing</div>
-                <div class="info-value">Live Stream</div>
+            <div class="vinyl-item active" data-station="junior" data-url="https://diffusion.lafrap.fr/sun-junior.mp3">
+                <div class="vinyl-sleeve">
+                    <div class="vinyl-cover">
+                        <div class="vinyl-cover-art cover-junior">
+                            <div class="cover-title">Junior</div>
+                            <div class="cover-subtitle">SUN Radio</div>
+                        </div>
+                    </div>
+                    <div class="vinyl-peek"></div>
+                    <div class="vinyl-spine"></div>
+                </div>
+                <div class="vinyl-info">
+                    <div class="vinyl-title">Junior</div>
+                    <div class="vinyl-genre">Kids & Family</div>
+                </div>
             </div>
 
-            <div class="controls-section">
+            <div class="vinyl-item" data-station="electro" data-url="https://diffusion.lafrap.fr/sun-electro.mp3">
+                <div class="vinyl-sleeve">
+                    <div class="vinyl-cover">
+                        <div class="vinyl-cover-art cover-electro">
+                            <div class="cover-title">Electro</div>
+                            <div class="cover-subtitle">SUN Radio</div>
+                        </div>
+                    </div>
+                    <div class="vinyl-peek"></div>
+                    <div class="vinyl-spine"></div>
+                </div>
+                <div class="vinyl-info">
+                    <div class="vinyl-title">Electro</div>
+                    <div class="vinyl-genre">Electronic</div>
+                </div>
+            </div>
+
+            <div class="vinyl-item" data-station="rock" data-url="https://diffusion.lafrap.fr/sun-rock.mp3">
+                <div class="vinyl-sleeve">
+                    <div class="vinyl-cover">
+                        <div class="vinyl-cover-art cover-rock">
+                            <div class="cover-title">Rock</div>
+                            <div class="cover-subtitle">SUN Radio</div>
+                        </div>
+                    </div>
+                    <div class="vinyl-peek"></div>
+                    <div class="vinyl-spine"></div>
+                </div>
+                <div class="vinyl-info">
+                    <div class="vinyl-title">Rock</div>
+                    <div class="vinyl-genre">Classic</div>
+                </div>
+            </div>
+
+            <div class="vinyl-item" data-station="nouvo" data-url="https://diffusion.lafrap.fr/sun-nouvo.mp3">
+                <div class="vinyl-sleeve">
+                    <div class="vinyl-cover">
+                        <div class="vinyl-cover-art cover-nouvo">
+                            <div class="cover-title">Nouvo</div>
+                            <div class="cover-subtitle">SUN Radio</div>
+                        </div>
+                    </div>
+                    <div class="vinyl-peek"></div>
+                    <div class="vinyl-spine"></div>
+                </div>
+                <div class="vinyl-info">
+                    <div class="vinyl-title">Nouvo</div>
+                    <div class="vinyl-genre">New Wave</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Player Section -->
+        <div class="player-section">
+            <div class="player-header">
+                <h1 class="logo">SUN</h1>
+                <p class="tagline">Radio Collection</p>
+            </div>
+
+            <div class="now-playing">
+                <div class="now-playing-label">Now Playing</div>
+                <div class="now-playing-title" id="nowPlayingTitle">Junior</div>
+            </div>
+
+            <div class="turntable-container">
+                <div class="turntable">
+                    <div class="plinth">
+                        <div class="foot foot-tl"></div>
+                        <div class="foot foot-tr"></div>
+                        <div class="foot foot-bl"></div>
+                        <div class="foot foot-br"></div>
+                    </div>
+
+                    <div class="power-led" id="powerLed"></div>
+
+                    <div class="platter-container">
+                        <div class="platter">
+                            <div class="strobe-dots" id="strobeDots"></div>
+
+                            <div class="vinyl-wrapper">
+                                <div class="vinyl" id="vinyl">
+                                    <div class="grooves"></div>
+                                    <div class="label label-junior" id="vinylLabel">
+                                        <div>SUN</div>
+                                        <div class="label-text" id="labelText">Junior</div>
+                                    </div>
+                                    <div class="spindle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tonearm-assembly">
+                        <div class="tonearm" id="tonearm">
+                            <div class="headshell"></div>
+                            <div class="counterweight"></div>
+                        </div>
+                        <div class="tonearm-base"></div>
+                    </div>
+
+                    <div class="control-panel">
+                        <div class="control-button">33</div>
+                        <div class="control-button active" id="startButton">START</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="player-controls">
                 <button class="play-button" id="playButton" aria-label="Play/Pause">
                     <svg class="play-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 5v14l11-7z"/>
@@ -733,51 +1099,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="player-container">
-            <div class="turntable">
-                <!-- Plinth (turntable base) -->
-                <div class="plinth">
-                    <div class="foot foot-tl"></div>
-                    <div class="foot foot-tr"></div>
-                    <div class="foot foot-bl"></div>
-                    <div class="foot foot-br"></div>
-                </div>
-
-                <!-- Power LED -->
-                <div class="power-led" id="powerLed"></div>
-
-                <!-- Platter and vinyl -->
-                <div class="platter-container">
-                    <div class="platter">
-                        <div class="strobe-dots" id="strobeDots"></div>
-
-                        <div class="vinyl-wrapper">
-                            <div class="vinyl" id="vinyl">
-                                <div class="grooves"></div>
-                                <div class="label">SUN</div>
-                                <div class="spindle"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tonearm assembly -->
-                <div class="tonearm-assembly">
-                    <div class="tonearm" id="tonearm">
-                        <div class="headshell"></div>
-                        <div class="counterweight"></div>
-                    </div>
-                    <div class="tonearm-base"></div>
-                </div>
-
-                <!-- Control panel -->
-                <div class="control-panel">
-                    <div class="control-button" id="speedButton">33</div>
-                    <div class="control-button active" id="startButton">START</div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <audio id="audio" preload="metadata">
@@ -790,10 +1111,24 @@
         const startButton = document.getElementById('startButton');
         const volumeSlider = document.getElementById('volumeSlider');
         const vinyl = document.getElementById('vinyl');
+        const vinylLabel = document.getElementById('vinylLabel');
+        const labelText = document.getElementById('labelText');
         const tonearm = document.getElementById('tonearm');
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
         const powerLed = document.getElementById('powerLed');
+        const nowPlayingTitle = document.getElementById('nowPlayingTitle');
+        const vinylItems = document.querySelectorAll('.vinyl-item');
+
+        // Station data
+        const stations = {
+            junior: { name: 'Junior', genre: 'Kids & Family' },
+            electro: { name: 'Electro', genre: 'Electronic Beats' },
+            rock: { name: 'Rock', genre: 'Classic Rock' },
+            nouvo: { name: 'Nouvo', genre: 'New Wave' }
+        };
+
+        let currentStation = 'junior';
 
         // Create strobe dots
         const strobeDots = document.getElementById('strobeDots');
@@ -806,15 +1141,65 @@
 
         audio.volume = volumeSlider.value / 100;
 
+        // Vinyl selection
+        vinylItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const station = item.dataset.station;
+                const url = item.dataset.url;
+
+                // Update active state
+                vinylItems.forEach(v => v.classList.remove('active'));
+                item.classList.add('active');
+
+                // Stop current playback
+                const wasPlaying = !audio.paused;
+                audio.pause();
+
+                // Update vinyl label
+                vinylLabel.className = `label label-${station}`;
+                labelText.textContent = stations[station].name;
+
+                // Update now playing
+                nowPlayingTitle.textContent = `${stations[station].name} - ${stations[station].genre}`;
+
+                // Change audio source
+                audio.src = url;
+                currentStation = station;
+
+                // Resume playback if was playing
+                if (wasPlaying) {
+                    audio.play().catch(err => {
+                        console.error('Auto-play failed:', err);
+                        updateUIState(false);
+                    });
+                } else {
+                    updateUIState(false);
+                }
+            });
+        });
+
+        function updateUIState(playing) {
+            if (playing) {
+                playButton.classList.add('playing');
+                startButton.classList.add('active');
+                vinyl.classList.add('spinning');
+                tonearm.classList.add('playing');
+                statusDot.classList.add('active');
+                powerLed.classList.add('active');
+            } else {
+                playButton.classList.remove('playing');
+                startButton.classList.remove('active');
+                vinyl.classList.remove('spinning');
+                tonearm.classList.remove('playing');
+                statusDot.classList.remove('active');
+                powerLed.classList.remove('active');
+            }
+        }
+
         function togglePlay() {
             if (audio.paused) {
                 audio.play().then(() => {
-                    playButton.classList.add('playing');
-                    startButton.classList.add('active');
-                    vinyl.classList.add('spinning');
-                    tonearm.classList.add('playing');
-                    statusDot.classList.add('active');
-                    powerLed.classList.add('active');
+                    updateUIState(true);
                     statusText.textContent = 'Live on air';
                 }).catch(error => {
                     console.error('Playback failed:', error);
@@ -822,12 +1207,7 @@
                 });
             } else {
                 audio.pause();
-                playButton.classList.remove('playing');
-                startButton.classList.remove('active');
-                vinyl.classList.remove('spinning');
-                tonearm.classList.remove('playing');
-                statusDot.classList.remove('active');
-                powerLed.classList.remove('active');
+                updateUIState(false);
                 statusText.textContent = 'Paused';
             }
         }
@@ -855,35 +1235,20 @@
 
         audio.addEventListener('playing', () => {
             statusText.textContent = 'Live on air';
-            statusDot.classList.add('active');
-            powerLed.classList.add('active');
-            playButton.classList.add('playing');
-            startButton.classList.add('active');
-            vinyl.classList.add('spinning');
-            tonearm.classList.add('playing');
+            updateUIState(true);
         });
 
         audio.addEventListener('pause', () => {
             if (!audio.ended) {
                 statusText.textContent = 'Paused';
-                playButton.classList.remove('playing');
-                startButton.classList.remove('active');
-                vinyl.classList.remove('spinning');
-                tonearm.classList.remove('playing');
-                statusDot.classList.remove('active');
-                powerLed.classList.remove('active');
+                updateUIState(false);
             }
         });
 
         audio.addEventListener('error', (e) => {
             console.error('Audio error:', e);
             statusText.textContent = 'Connection error';
-            playButton.classList.remove('playing');
-            startButton.classList.remove('active');
-            vinyl.classList.remove('spinning');
-            tonearm.classList.remove('playing');
-            statusDot.classList.remove('active');
-            powerLed.classList.remove('active');
+            updateUIState(false);
         });
 
         document.addEventListener('keydown', (e) => {
